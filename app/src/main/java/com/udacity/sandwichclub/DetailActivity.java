@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
+
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -43,7 +46,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +59,47 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
+        //Binding TextViews in Detail Activity
+        TextView alsoKnownAs = (TextView) findViewById(R.id.also_known_tv);
+        TextView placeOfOrigin = (TextView) findViewById(R.id.origin_tv);
+        TextView descriptionDetail = (TextView) findViewById(R.id.description_tv);
+        TextView ingredientsDetail = (TextView) findViewById(R.id.ingredients_tv);
+        String noDataLabel = "Sorry No Info Available !!";
+
+        //Populate TextView in DetailActivity with Data from Sandwich Object
+        if(sandwich.getPlaceOfOrigin().isEmpty())
+            placeOfOrigin.setText(noDataLabel);
+        else
+            placeOfOrigin.setText(sandwich.getPlaceOfOrigin());
+
+        if (sandwich.getDescription().isEmpty())
+            descriptionDetail.setText(noDataLabel);
+        else
+            descriptionDetail.setText(sandwich.getDescription());
+
+        if(sandwich.getAlsoKnownAs().isEmpty()){
+            alsoKnownAs.setText(noDataLabel);
+        }
+        else{
+            StringBuilder alias = new StringBuilder();
+            for( String value : sandwich.getAlsoKnownAs()){
+                alias.append(value).append(", ");
+            }
+            alsoKnownAs.setText(alias);
+        }
+
+        if(sandwich.getIngredients().isEmpty()){
+            ingredientsDetail.setText(noDataLabel);
+        }
+        else{
+            StringBuilder ingredients = new StringBuilder();
+            for( String value : sandwich.getIngredients()){
+                ingredients.append(" -> ").append(value).append("\n\n");
+            }
+            ingredientsDetail.setText(ingredients);
+        }
 
     }
+
 }

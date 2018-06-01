@@ -13,7 +13,16 @@ import java.util.List;
 
 public class JsonUtils {
 
+    public static final String KEY_NAME = "name";
+    public static final String KEY_MAIN_NAME = "mainName";
+    public static final String KEY_ALSO_KNOW_AS = "alsoKnownAs";
+    public static final String KEY_PLACE_OF_ORIGIN = "placeOfOrigin";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_IMAGE = "image";
+    public static final String KEY_INGREDIENT = "ingredients";
+
     public static Sandwich parseSandwichJson(String json) {
+
         List<String> ingredients = new ArrayList<String>();
         List<String> alsoKnownAsArray = new ArrayList<String>();
 
@@ -22,12 +31,12 @@ public class JsonUtils {
             JSONObject sandwichObj = new JSONObject(json);
 
             //Getting JSON name Obj
-            JSONObject nameObj = sandwichObj.getJSONObject("name");
+            JSONObject nameObj = sandwichObj.getJSONObject(KEY_NAME);
 
             //Fetch mainName and Alias of Name Object
-            String mainName = nameObj.getString("mainName");
+            String mainName = nameObj.optString(KEY_MAIN_NAME);
             //Fetch alsoKnownAs Array of Name Object
-            JSONArray alsoKnownAs = nameObj.getJSONArray("alsoKnownAs");
+            JSONArray alsoKnownAs = nameObj.getJSONArray(KEY_ALSO_KNOW_AS);
             for (int size = 0; size < alsoKnownAs.length(); size++) {
                 String alsoKnownAsString = alsoKnownAs.getString(size);
 
@@ -36,14 +45,14 @@ public class JsonUtils {
             }
 
             //Fetch placeOfOrigin of Sandwich Object
-            String placeOfOrigin = sandwichObj.getString("placeOfOrigin");
+            String placeOfOrigin = sandwichObj.optString(KEY_PLACE_OF_ORIGIN);
             //Fetch description of Sandwich Object
-            String description = sandwichObj.getString("description");
+            String description = sandwichObj.optString(KEY_DESCRIPTION);
             //Fetch image of Sandwich Object
-            String image = sandwichObj.getString("image");
+            String image = sandwichObj.optString(KEY_IMAGE);
 
             //Fetch ingredientsArray of Sandwich Object
-            JSONArray ingredientsArray = sandwichObj.getJSONArray("ingredients");
+            JSONArray ingredientsArray = sandwichObj.getJSONArray(KEY_INGREDIENT);
             for (int size= 0; size < ingredientsArray.length(); size++){
                 String ingredient_item = ingredientsArray.getString(size);
 
